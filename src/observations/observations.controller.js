@@ -1,5 +1,4 @@
-let nextId = 1;
-const observations = []
+const service = require("./observations.service")
 
 const validSkyConditions = [100, 101, 102, 103, 104, 105, 106, 107, 108, 109]
 
@@ -34,19 +33,15 @@ function hasSkyCondition(req, res, next) {
     next({ status: 400, message: `sky_condition must be one of: ${validSkyConditions}`})
 }
 
+const observations = []
+
 async function create(req, res) {
-  const newObservation = req.body.data;
 
-  const now = new Date().toISOString();
-  newObservation.observation_id = nextId++;
-  newObservation.created_at = now;
-  newObservation.updated_at = now;
+    const newObservation = await service.create(req.body.data);
 
-  observations.push(newObservation)
-
-  res.status(201).json({
-    data: newObservation,
-  });
+    res.status(201).json({
+        data: newObservation,
+    });
 }
 
 async function list(req, res) {
