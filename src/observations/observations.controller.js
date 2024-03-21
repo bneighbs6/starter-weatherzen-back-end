@@ -47,5 +47,5 @@ async function create(req, res) {
 }
 
 module.exports = {
-  create,
+  create: [hasData, hasLatitude, hasLongitude, hasSkyCondition, create],
 };
